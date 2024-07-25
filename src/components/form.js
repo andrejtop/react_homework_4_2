@@ -18,51 +18,30 @@ export default function Form() {  // КОМПОНЕНТ Формы
   const [itemsObj, setItemsObj] = useState([]); // массив объектов, передаваемыех в компонент <List />
 
   document.addEventListener("DOMContentLoaded", () => {
-    document.querySelector('input').focus();
+    document.querySelector('input[type="date"]').focus();
   });
   
   const handleDateChange = evt => { // функция обработки набора символов внутри input-а "ДАТА"
     
     setForm(prevForm => ({...prevForm, date_input: evt.target.value}));
     
-    if ((!(/[0-9.]/gm.test(evt.target.value))) || // проверка выражения по условию "что-то кроме цифр и точки"
-        (evt.target.value.length > 8)) // или длина вставленной в поле строки более 8 символов
-       { 
-        setForm(prevForm => ({...prevForm, date_input: ''})) // очищаем поле
-      };
-    
-    if ((/(0[1-9]|[12][0-9]|3[01])[.](0[1-9]|1[012])[.]\d\d/gmi.test(evt.target.value)) && evt.target.value.length === 8) { // если в поле "input" набрана корректная дата
-      
-      setForm(prevForm => ({...prevForm, date_input: evt.target.value}));
-      dateValue = evt.target.value;
-    }
   }
 
   const handleDistanceChange = evt => { // функция обработки набора символов внутри input-а "Пройдено км"
 
     setForm(prevForm => ({...prevForm, distance_input: evt.target.value}));
 
-    if (/-?\d+(\.\d{0,})?/gmi.test(evt.target.value)) { // если в поле "distance" набрано корректное число
-      
-      setForm(prevForm => ({...prevForm, distance_input: evt.target.value}));
-      distanceValue = evt.target.value;
-          
-    } else {
-      setForm(prevForm => ({...prevForm, distance_input: ''})) // очищаем поле
-    }
   }
   
   const handleSubmit = evt => { // обработка нажатия "Enter"
     evt.preventDefault();
     if ((dateValue !== '') && (distanceValue !== '')) { // если все поля "input" корректно заполнены
       
-      let tempArr = arrCombiner(dateValue, distanceValue);
+      let tempArr = arrCombiner(form.date_input, form.distance_input);
       setItemsObj(prevItemsObj => tempArr);
       
-      dateValue = '';
-      distanceValue = '';
-      setForm(prevForm => ({...prevForm, distance_input: '', date_input: ''}));
-      document.querySelector('input').focus();
+      setForm(prevForm => ({ distance_input: '', date_input: '' }));
+      document.querySelector('input[type="date"]').focus();
     };
   };
 
@@ -70,13 +49,11 @@ export default function Form() {  // КОМПОНЕНТ Формы
     
     if ((dateValue !== '') && (distanceValue !== '')) { // если все поля "input" корректно заполнены
       
-      let tempArr = arrCombiner(dateValue, distanceValue);
+      let tempArr = arrCombiner(form.date_input, form.distance_input);
       setItemsObj(prevItemsObj => tempArr);
       
-      dateValue = '';
-      distanceValue = '';
-      setForm(prevForm => ({...prevForm, distance_input: '', date_input: ''}));
-      document.querySelector('input').focus();
+      setForm(prevForm => ({ distance_input: '', date_input: '' }));
+      document.querySelector('input[type="date"]').focus();
     };
   };
 
